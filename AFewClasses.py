@@ -49,10 +49,10 @@ def utilizeTokens(tokens):
     
     print('  List of Tokens:')
     for token in badTokens:
-        print token + ': this was a bad token :('
+        print(token + ': this was a bad token :(')
         
     for token in goodTokens:
-        print token + ': this medicine exists :)'
+        print(token + ': this medicine exists :)')
     
     return goodTokens
 
