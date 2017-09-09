@@ -51,16 +51,18 @@ def processLine(commandLine, infoList):
             processedLine = processedLine[1:]       # in the case that the user uses spaces after commas
         newToken = processedLine     # for the case that the line is not empty after parsing
         tokens.append(newToken)
-
-    goodTokens = []     # tests if a token parsed from the line is a valid condition
-    names = []
-    for element in infoList:
-        names.append(element.name)
-    for token in tokens:
-        if token in names:
-            goodTokens.append(token)
     
-    return goodTokens
+    return tokens
+
+def mkTreatmentList(tokens, dictionary):
+    treatmentList = []
+    for token in tokens:
+        if token in dictionary.keys():
+            for treatment in dictionary[token].treatments:
+                if treatment not in treatmentList:
+                    treatmentList.append(treatment)
+    return treatmentList
+
 #################################################
 # DATA STRUCTURE
 #################################################
