@@ -26,6 +26,41 @@ def display(resL):
             # print(med.sideEffects + "\n")
         # print(med.cautions + "\n")
         print("\n")
+        
+def processLine(commandLine, infoList):
+    processedLine = commandLine
+    tokens = []
+  
+    commaLocator = processedLine.find(',')
+    while commaLocator != -1:
+        if processedLine[commaLocator-1] == ' ':
+            processedLine = processedLine[:commaLocator-1] + processedLine[commaLocator:]   # if user uses a space before the comma
+
+        newToken = processedLine[:commaLocator]     # things must be separated by commas
+        tokens.append(newToken)
+        processedLine = processedLine[commaLocator+1:]
+        print(processedLine)
+
+        while processedLine[0] == ' ':
+            processedLine = processedLine[1:]       # in the case that the user uses spaces after commas
+        
+        commaLocator = processedLine.find(',')      # for the while loop condition
+   
+    if len(processedLine) > 0:
+        while processedLine[0] == ' ':
+            processedLine = processedLine[1:]       # in the case that the user uses spaces after commas
+        newToken = processedLine     # for the case that the line is not empty after parsing
+        tokens.append(newToken)
+
+    goodTokens = []     # tests if a token parsed from the line is a valid condition
+    names = []
+    for element in infoList:
+        names.append(element.name)
+    for token in tokens:
+        if token in names:
+            goodTokens.append(token)
+    
+    return goodTokens
 #################################################
 # DATA STRUCTURE
 #################################################
@@ -65,8 +100,9 @@ class Condition():
 # PRELOAD
 #################################################
 # This just ignores dictionary for now 
+
 def loadConditions():
-    L = []
+    # medications that pertain to the conditions
     abilify = Medication('abilify', ['fentora', 'morphine'], ['difficulty with speaking', 'uncontrolled movements'])
     cymbalta = Medication('cymbalta', ['zoloft', 'sustol', 'lithium', 'tamofen', 'prozac', 'fentora', 'ranexa'], ['cold sweats', 'weakness', 'blindness'])
     fentora = Medication('fentora', ['prozac', 'sustol', 'zoloft', 'morphine', 'abilify', 'cymbalta', 'haldol'], ['convulsions', 'light-headedness', 'nervousness'])
@@ -74,15 +110,23 @@ def loadConditions():
     zoloft = Medication('zoloft', ['lithium', 'cymbalta', 'fentora', 'sustol', 'tamofen', 'haldol'], ['diarrhea', 'sweating', 'inability to sit still'])
     ibuprofen = Medication('ibuprofen', ['lithium'], ['heartburn', 'shortness of breath'])
     tamofen = Medication('tamofen', ['ibuprofen', 'prozac', 'zoloft', 'ranexa', 'haldol'], ['anxiety', 'confusion', 'dizziness'])
-    prozac= Medication('prozac', ['abilify', 'ibuprofen', 'lithium', 'tamofen', 'sustol'], ['suicidal thoughts and behaviors', 'seizures', 'abnormal bleeding'])
+    prozac = Medication('prozac', ['abilify', 'ibuprofen', 'lithium', 'tamofen', 'sustol'], ['suicidal thoughts and behaviors', 'seizures', 'abnormal bleeding'])
     lithium = Medication('lithium', ['ibuprofen', 'zoloft', 'sustol', 'prozac', 'cymbalta', 'haldol'], ['fainting', 'irregular heartbeat', 'troubled breathing'])
     morphine = Medication('morphine', ['abilify', 'fentora', 'haldol'], ['stomache pain', 'headache'])
     ranexa = Medication('ranexa', ['tamofen', 'cymbalta', 'haldol'], ['dizziness', 'constipation', 'nausea', 'sensation of spinning'])
     haldol = Medication('haldol', ['sustol', 'ranexa', 'zoloft', 'morphine', 'fentora', 'lithium', 'tamofen'], ['insomnia', 'agitation', 'difficulty speaking', 'troubled swallowing'])
-    L.append([abilify,cymbalta,fentora])
-    L.append([sustol,zoloft,ibuprofen])
-    L.append([prozac,lithium,morphine])
-    return L 
+
+    # initializing actual conditions
+    depression = Condition('depression', [lithium, zoloft, prozac, cymbalta, haldol])
+    pain = Condition('pain', [ibuprofen, morphine, ranexa, fentora])
+    schizophrenia = Condition('schizophrenia', [lithium, haldol])
+    cancer = Condition('cancer', [tamofen])
+    OCD = Condition('obsessive compulsive disorder', [prozac, zoloft])
+    anxietyDisorder = Condition('anxiety disorder', [zoloft, cymbalta])
+
+    L = [depression, pain, schizophrenia, cancer, OCD, anxietyDisorder]
+    return L
+
 def loadDictionary(data):
     # dictionary data.d contains all of the conditions 
     # contains all of the information on the conditions 
