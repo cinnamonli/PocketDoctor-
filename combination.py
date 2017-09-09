@@ -73,9 +73,10 @@ def isSafe(m1, m2):
 def display(resL):
 	for med in resL:
 		print(med.name + ":\n")
-        print(med.sideEffects + "\n")
-        print(med.cautions + "\n")
-    
+		print(med.sideEffects + "\n")
+		print(med.cautions + "\n")
+   
+
 # @requires takes in a 2d list containing the lists of medications required  
 # @ensures returns a list containing all the possible solutions to the conditions 
 def getValidPrescriptions(medicationsList):
@@ -109,5 +110,7 @@ def getValidPrescriptions(medicationsList):
             return None
     return solve(medicationsList,[])
 meds = getMedications(name1, name2)
+# display(meds[0])
+# display(meds[1])
 result = getValidPrescriptions(meds)
 display(result)
