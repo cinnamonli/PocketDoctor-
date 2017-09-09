@@ -1,4 +1,35 @@
-# Classes
+# This program is used to read in user input, whether it be conditions or medications
+    # However, the program as it is can only expect either conditions or medications, not both
+
+class Medication():
+
+    def __init__(self, name, contraMeds, sideEffects):
+        self.name = name
+        # a list of med names that cause adverse drug reactions 
+        self.contraMeds = contraMeds
+        # a list of side effects 
+        self.sideEffects = sideEffects
+
+    def __hash__(self):
+        return hash(self.name)
+
+    def __eq__(self, other):
+        return (isinstance(other, A) and (self.name == other.name))
+
+class Condition():
+
+    def __init__(self, name, treatments):
+        self.name = name
+        self.treatments = treatments
+
+    def __hash__(self):
+        return hash(self.name)
+
+    def __eq__(self, other):
+        return (isinstance(other, A) and (self.name == other.name))
+
+    def printer(self):
+        print(2)
 
 d = {} # dictionary of classes
 
@@ -28,7 +59,7 @@ def processLine(commandLine):
         processedLine = processedLine[commaLocator+1:]
   
         while processedLine[0] == ' ':
-            processedLine = processedLine[1:]       # in the case that the user uses spaces
+            processedLine = processedLine[1:]       # in the case that the user uses spaces after commas
         
         commaLocator = processedLine.find(',')
         
@@ -38,24 +69,32 @@ def processLine(commandLine):
     
     return tokens
 
-def utilizeTokens(tokens):
-    badTokens = []
+def tokens(tokens, infoDict, medOrCondition):
+    ''' Retrieves good tokens '''
     goodTokens = []
-    for token in tokens:
-        if token not in d.keys():
-            badTokens.append(token)
-        else:
-            goodTokens.append(token)
-    
+
     print('  List of Tokens:')
-    for token in badTokens:
-        print(token + ': this was a bad token :(')
-        
-    for token in goodTokens:
-        print(token + ': this medicine exists :)')
+    for token in tokens:
+        if token not in infoDict.keys():
+            print(token + ': this ' + medOrCondition + ' does not exist')
+        else:
+            print(token + ': this ' + medOrCondition + ' exists')
+            goodTokens.append(token)
     
     return goodTokens
 
-def functionThatUsesGoodTokens(goodTokens):
-    for token in badTokens:
-        print(d[token])
+def goodMedTokens(goodTokens):
+    ''' Prints the value in parts '''
+    for token in goodTokens:
+        val = d[token]
+        print(val.name, val.contraMeds, val.sideEffects)
+
+def goodConditionTokens(goodTokens):
+    ''' Prints the value in parts '''
+    for token in goodTokens:
+        val = d[token]
+        print(val.name, val.treatments)
+
+x = processLine('prozac, zoloft, iweviweuvb') # example
+y = tokens(x, d, 'medicine')
+goodMedTokens(y)
