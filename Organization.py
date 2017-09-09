@@ -52,7 +52,16 @@ def processLine(commandLine, infoList):
         newToken = processedLine     # for the case that the line is not empty after parsing
         tokens.append(newToken)
     
-    return tokens
+    names = []
+    goodTokens = []
+
+    for condition in infoList:
+        names.append(condition.name)
+    for token in tokens:
+        if token in names:
+            goodTokens.append(token)
+    
+    return goodTokens
 
 def mkTreatmentList(tokens, dictionary):
     treatmentList = []
