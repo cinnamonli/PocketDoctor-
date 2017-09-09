@@ -6,9 +6,10 @@ class Medication():
 
     def __init__(self, name, contraMeds, sideEffects, cautions):
         self.name = name
+        # a list of med names that cause adverse drug reactions 
         self.contraMeds = contraMeds
+        # a list of side effects 
         self.sideEffects = sideEffects
-        self.cautions = cautions
 
     def __hash__(self):
         return hash(self.name)
