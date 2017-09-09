@@ -33,7 +33,7 @@ def loadBackgrounds(data):
     # adapted from https://www.iconfinder.com/icons/310934/compose_draw_graph_line_pencil_write_icon
     data.entryScreenBackground = Image.open("Desktop/entryScreen.gif")
 
-    data.gameOverBackground = Image.open("Desktop/entryScreen.gif")
+    data.gameOverBackground = data.entryScreenBackground
     #https://www.gizmodo.com.au/2013/02/scientists-claim-to-have-built-a-computer-that-never-crashes/
 
 def startModeInit(data):
@@ -41,12 +41,13 @@ def startModeInit(data):
     loadButtons(data)
     loadBackgrounds(data)
     data.mstartButtonPressed = False
-    data.mbuttons = [Button(data.width//2,data.height*2//3,data.startButtonImg)]
+    data.mbuttons = [selfDefinedButton(data.width//2,data.height*2//3,data.startButtonImg)]
 
 def entryScreenModeInit(data):
     #initializes everything in entryScreen mode
     data.hbackButtonPressed = False
-    data.hbuttons = [Button(data.width//2,data.height*2//3,data.backButtonImg)]
+    data.hbuttons = [selfDefinedButton(data.width//2,data.height*5//12,data.backButtonImg), 
+                     selfDefinedButton(data.width//2,data.height*7//12,data.runButtonImg), ]
 
 def preloadImages(data):
     #This laods in all the images as PIL format
@@ -54,7 +55,7 @@ def preloadImages(data):
 
 
 def gameOverModeInit(data):
-    data.dbuttons = [Button(data.width//2,data.height*9//10,data.detailsButtonImg)]
+    data.dbuttons = [selfDefinedButton(data.width//2,data.height*9//10,data.detailsButtonImg)]
 
 
 
@@ -163,10 +164,14 @@ def entryScreenModeDraw(canvas,data):
         button.draw(canvas,data) 
 
 def gameOverModeDraw(canvas,data):
+    # TkFormat = PIL.ImageTk.PhotoImage(data.gameOverBackground)
+    # data.newImg = TkFormat
+    # #this stores the new image so it doesn't get garbage collected 
+    # canvas.create_image(data.width/2, data.height/2,image=data.gameOverBackground)
     TkFormat = PIL.ImageTk.PhotoImage(data.gameOverBackground)
     data.newImg = TkFormat
     #this stores the new image so it doesn't get garbage collected 
-    canvas.create_image(data.width/2, data.height/2,image=data.gameOverBackground)
+    canvas.create_image(data.width/2, data.height/2,image=data.newImg)
     for button in data.dbuttons:
         button.draw(canvas,data)
     Arcade90 = font.Font(family='ArcadeClassic',
@@ -174,9 +179,11 @@ def gameOverModeDraw(canvas,data):
     Arcade60 = font.Font(family='ArcadeClassic',
         size=60, weight='bold')
     text1 = "Results"
+    text2 = data.input
     canvas.create_text(data.width/2,data.height/4, anchor = S,text = text1,font = Arcade90)
+    canvas.create_text(data.width/2,data.height/4, anchor = N,text = text2,font = Arcade90)
 
-class Button(object):
+class selfDefinedButton(object):
     def __init__(self,x,y,ImgFile):
         self.x = x
         self.y = y
@@ -198,15 +205,31 @@ class Button(object):
                 entryScreenModeInit(data)
                 data.mode = "entryScreenMode"
             elif data.mode == "entryScreenMode" and self.img == data.backButtonImg:
-            #help is pressed
+            #back is pressed
                 startModeInit(data) 
                 data.mode = "startMode"
+            elif data.mode == "entryScreenMode" and self.img == data.runButtonImg:
+                #run is pressed
+                openWindow(data)
+                print("window is closed moved to the next line, input = ",data.input)
+                data.mode = "gameOverMode"
             elif data.mode == "gameOverMode" and self.img == data.backButtonImg:
                 startModeInit(data)
                 data.mode = "startMode"
 ####################################
 # use the run function as-is
 ####################################
+def openWindow(data):
+    root2 = Tk()
+    Label(root2, text="Conditions").grid(row=0)
+
+    e1 = Entry(root2)
+    e1.grid(row=0, column=1)
+# button = Button(root2, text='Get prescription', command=root2.quit).grid(row=3, column=0, sticky=W, pady=4)
+    data.input = e1.get()
+    Button(root2, text='Get prescription',command=root2.quit).grid(row=3, column=1, sticky=W, pady=4)
+    mainloop()
+
 def run(width=300, height=300):
     def redrawAllWrapper(canvas, data):
         canvas.delete(ALL)
