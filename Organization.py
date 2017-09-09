@@ -57,10 +57,9 @@ def processLine(commandLine, infoList):
 def mkTreatmentList(tokens, dictionary):
     treatmentList = []
     for token in tokens:
-        if token in dictionary.keys():
-            for treatment in dictionary[token].treatments:
-                if treatment not in treatmentList:
-                    treatmentList.append(treatment)
+        condition = dictionary[token]
+        treatment = condition.treatments
+        treatmentList.append(treatment)
     return treatmentList
 
 #################################################
@@ -123,8 +122,8 @@ def loadConditions():
     pain = Condition('pain', [ibuprofen, morphine, ranexa, fentora])
     schizophrenia = Condition('schizophrenia', [lithium, haldol])
     cancer = Condition('cancer', [tamofen])
-    OCD = Condition('obsessive compulsive disorder', [prozac, zoloft])
-    anxietyDisorder = Condition('anxiety disorder', [zoloft, cymbalta])
+    OCD = Condition('OCD', [prozac, zoloft])
+    anxietyDisorder = Condition('anxietyDisorder', [zoloft, cymbalta])
 
     L = [depression, pain, schizophrenia, cancer, OCD, anxietyDisorder]
     return L
@@ -352,10 +351,10 @@ def gameOverModeDraw(canvas,data):
 
     # This is simply for testing purposes
     conditions = loadConditions()
-    tokens = processLine(data.entry, conditions)
-    meds = mkTreatmentsList(tokens, data.d)
+    tokens = processLine(data.input, conditions)
+    meds = mkTreatmentList(tokens, data.d)
     data.results = getValidPrescriptions(meds)
-    if data.terminalShow == False:
+    if (data.terminalShow == False and (data.results != None) ) :
         display(data.results)
         data.terminalShow = True
     # 
@@ -379,21 +378,22 @@ def gameOverModeDraw(canvas,data):
     displayResult(canvas,data)
 
 def displayResult(canvas,data):
-    scale = data.height//12
-    bias = data.height/4 + scale/2
-    for i in range (len(data.results)):
-        med = data.results[i]
-        header = med.name
-        sideEffects = "Side effects: "+('   '.join(str(e) for e in med.sideEffects))+"\n"
-        height1 = bias + scale*2*i 
-        height2 = bias + scale*(2*i+1) 
-        Cambria50 = font.Font(family='Cambria',
-        size=50, weight='bold')
-        Cambria30 = font.Font(family='Cambria',
-        size=30, weight='bold')
-        canvas.create_text(data.width/2,height1, anchor = N,text = header,font = Cambria50)
-        if data.showDetails == True:
-            canvas.create_text(data.width/2,height2, anchor = N,text = sideEffects,font = Cambria30)
+    if (data.results!=None):
+        scale = data.height//12
+        bias = data.height/4 + scale/2
+        for i in range (len(data.results)):
+            med = data.results[i]
+            header = med.name
+            sideEffects = "Side effects: "+('   '.join(str(e) for e in med.sideEffects))+"\n"
+            height1 = bias + scale*2*i 
+            height2 = bias + scale*(2*i+1) 
+            Cambria50 = font.Font(family='Cambria',
+            size=50, weight='bold')
+            Cambria20 = font.Font(family='Cambria',
+            size=20, weight='bold')
+            canvas.create_text(data.width/2,height1, anchor = N,text = header,font = Cambria50)
+            if data.showDetails == True:
+                canvas.create_text(data.width/2,height2, anchor = N,text = sideEffects,font = Cambria20)
 
 class selfDefinedButton(object):
     def __init__(self,x,y,ImgFile):
