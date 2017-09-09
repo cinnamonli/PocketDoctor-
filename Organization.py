@@ -17,6 +17,7 @@ import os
 # Init
 #################################################
 def init(data):
+    data.input = ""
     data.mode = "startMode"
     startModeInit(data)
     entryScreenModeInit(data)
@@ -226,8 +227,15 @@ def openWindow(data):
     e1 = Entry(root2)
     e1.grid(row=0, column=1)
 # button = Button(root2, text='Get prescription', command=root2.quit).grid(row=3, column=0, sticky=W, pady=4)
-    data.input = e1.get()
-    Button(root2, text='Get prescription',command=root2.quit).grid(row=3, column=1, sticky=W, pady=4)
+    
+    #lamda data: data.input = e1.get()
+    def fn():
+        print("trying to save data: %s" % e1.get())
+        data.input = e1.get()
+        return
+    Button(root2, text='get prescription',command=fn).grid(row=3, column=0, sticky=W, pady=4)
+    Button(root2, text='quit',command=root2.quit).grid(row=3, column=1, sticky=W, pady=4)
+    
     mainloop()
 
 def run(width=300, height=300):
