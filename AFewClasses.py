@@ -39,8 +39,17 @@ def processLine(commandLine):
     return tokens
 
 def utilizeTokens(tokens):
-    badToken = []
-    goodToken = []
+    badTokens = []
+    goodTokens = []
     for token in tokens:
         if token not in d.keys():
-            # not finished here
+            badTokens.append(token)
+        else:
+            goodTokens.append(token)
+    
+    for token in badTokens:
+        # print token + ': this was a bad token :('
+        
+    for token in goodTokens:
+        # print token + ': this medicine exists :)'
+        # do something with the tokens
