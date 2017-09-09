@@ -14,10 +14,7 @@ class Medication():
         return hash(self.name)
 
     def __eq__(self, other):
-        return (isinstance(other, A) and (self.x == other.x))
-
-    def printer(self):
-        print(1)
+        return (isinstance(other, A) and (self.name == other.name))
 
 class Condition():
 
