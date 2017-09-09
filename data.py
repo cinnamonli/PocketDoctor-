@@ -4,7 +4,7 @@ d = {} # conditions dictionary
 
 class Medication():
 
-    def __init__(self, name, contraMeds, sideEffects, cautions):
+    def __init__(self, name, contraMeds, sideEffects):
         self.name = name
         # a list of med names that cause adverse drug reactions 
         self.contraMeds = contraMeds
