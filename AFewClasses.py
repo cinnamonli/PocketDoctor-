@@ -47,9 +47,15 @@ def utilizeTokens(tokens):
         else:
             goodTokens.append(token)
     
+    print('  List of Tokens:')
     for token in badTokens:
-        # print token + ': this was a bad token :('
+        print token + ': this was a bad token :('
         
     for token in goodTokens:
-        # print token + ': this medicine exists :)'
-        # do something with the tokens
+        print token + ': this medicine exists :)'
+    
+    return goodTokens
+
+def functionThatUsesGoodTokens(goodTokens):
+    for token in badTokens:
+        print(d[token])
