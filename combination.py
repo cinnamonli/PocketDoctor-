@@ -79,12 +79,11 @@ def display(resL):
 
 # @requires takes in a 2d list containing the lists of medications required  
 # @ensures returns a list containing all the possible solutions to the conditions 
-def getValidPrescriptions(medicationsList):
-    prescription = []; 
+def getValidPrescriptions(medicationsList): 
     def isLegal(curMed, curSolution):
         # a position is legal if the med doesn't contradict with the previous
         for med in curSolution:
-        	if not(isSafe(curMed,med.name)):
+        	if not(isSafe(med,curMed.name)):
         		return False
         return True
     def solve(medicationsList,resL):
