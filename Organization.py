@@ -220,7 +220,7 @@ def startModeInit(data):
     #main screen button 
     loadButtons(data)
     loadBackgrounds(data)
-    # loadDictionary(data)
+    loadDictionary(data)
     data.mstartButtonPressed = False
     data.mbuttons = [selfDefinedButton(data.width//2,data.height*2//3,data.startButtonImg)]
 
@@ -350,8 +350,10 @@ def entryScreenModeDraw(canvas,data):
 
 def gameOverModeDraw(canvas,data):
 
-    # This is simply for testing purposes 
-    meds = loadConditions()
+    # This is simply for testing purposes
+    conditions = loadConditions()
+    tokens = processLine(data.entry, conditions)
+    meds = mkTreatmentsList(tokens, data.d)
     data.results = getValidPrescriptions(meds)
     if data.terminalShow == False:
         display(data.results)
