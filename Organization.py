@@ -285,17 +285,20 @@ def startModeDraw(canvas,data):
     for button in data.mbuttons:
         button.draw(canvas,data)
     Arcade160 = font.Font(family='ArcadeClassic',
-        size=120, weight='bold')
-    canvas.create_text(data.width/2, data.height/3,anchor = N,text="PocketDoctor",font = Arcade160)
+        size=160, weight='bold')
+    canvas.create_text(data.width/2, data.height*4/7,anchor = S,text="Pocket\n"+"Doctor",font = Arcade160)
 
 def entryScreenModeDraw(canvas,data):
     TkFormat = PIL.ImageTk.PhotoImage(data.entryScreenBackground)
     data.newImg = TkFormat
     #this stores the new image so it doesn't get garbage collected 
     canvas.create_image(data.width/2, data.height/2,image=data.newImg)
-    Arcade90 = font.Font(family='ArcadeClassic',
-        size=80, weight='bold')
-    canvas.create_text(data.width/2, data.height/9,text="Enter your information",font = Arcade90)
+    Cambria50 = font.Font(family='Cambria',
+        size=50, weight='bold')
+    Cambria30 = font.Font(family='Cambria',
+        size=30, weight='bold')
+    canvas.create_text(data.width/2, data.height/7,text="List your conditions",font = Cambria50)
+    canvas.create_text(data.width/2, data.height/5,text='using "," to denote a new condition',anchor = N, font = Cambria30)
     for button in data.hbuttons:
         button.draw(canvas,data) 
 
@@ -328,21 +331,21 @@ def gameOverModeDraw(canvas,data):
     displayResult(canvas,data)
 
 def displayResult(canvas,data):
-    scale = data.height//16
-    bias = data.height/4
+    scale = data.height//12
+    bias = data.height/4 + scale/2
     for i in range (len(data.results)):
         med = data.results[i]
         header = med.name
-        sideEffects = ('   '.join(str(e) for e in med.sideEffects))+"\n"
+        sideEffects = "Side effects: "+('   '.join(str(e) for e in med.sideEffects))+"\n"
         height1 = bias + scale*2*i 
         height2 = bias + scale*(2*i+1) 
-        Arcade40 = font.Font(family='ArcadeClassic',
-            size=40, weight='bold')
-        Arcade20 = font.Font(family='ArcadeClassic',
-            size=20, weight='bold')
-        canvas.create_text(data.width/2,height1, anchor = N,text = header,font = Arcade40)
+        Cambria50 = font.Font(family='Cambria',
+        size=50, weight='bold')
+        Cambria30 = font.Font(family='Cambria',
+        size=30, weight='bold')
+        canvas.create_text(data.width/2,height1, anchor = N,text = header,font = Cambria50)
         if data.showDetails == True:
-            canvas.create_text(data.width/2,height2, anchor = N,text = sideEffects,font = Arcade20)
+            canvas.create_text(data.width/2,height2, anchor = N,text = sideEffects,font = Cambria30)
 
 class selfDefinedButton(object):
     def __init__(self,x,y,ImgFile):
